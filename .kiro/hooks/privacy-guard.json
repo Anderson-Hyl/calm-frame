@@ -1,0 +1,1 @@
+{"version":"v1","hooks":[{"name":"Privacy guard: never record audio","trigger":"PostFileSave","matcher":"App/.*\\.swift$","action":{"type":"command","command":"! grep -nE 'AVAudioFile|AVAudioRecorder|installTap.*write|\\.caf|\\.m4a' App -r --include=*.swift || (echo 'Possible audio persistence found — Calm Frame must never record audio.' >&2; exit 1)"}}]}

@@ -1,0 +1,1 @@
+{"version":"v1","hooks":[{"name":"Shared DTOs live in CalmFrameKit","trigger":"PostFileSave","matcher":"(App|Server)/.*\\.swift$","action":{"type":"agent","prompt":"检查刚保存的文件：如果它定义了在 App 与 Server 之间传输的 Codable 类型（请求/响应、Mood、PaintingStyle），请把它移到 Packages/CalmFrameKit 并改为 import CalmFrameKit。"}}]}

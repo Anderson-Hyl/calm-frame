@@ -1,0 +1,1 @@
+{"version":"v1","hooks":[{"name":"Build server on save","trigger":"PostFileSave","matcher":"Server/Sources/.*\\.swift$","timeout":300,"action":{"type":"command","command":"cd Server && swift build 2>&1 | tail -n 30"}}]}
