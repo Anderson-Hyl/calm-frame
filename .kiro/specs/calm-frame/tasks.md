@@ -14,7 +14,7 @@
 
 ### W1
 - [ ] 1. 仓库初始化：MIT LICENSE、README、`.gitignore`（确认不含 `.kiro`）
-- [ ] 2. 创建 `Packages/CalmFrameKit`，定义 Mood/Style/DTO（需求 2、7）
+- [x] 2. 创建 `Packages/CalmFrameKit`，定义 Mood/Style/DTO（需求 2、7）
 - [ ] 3. Vapor 工程：`/health`、Postgres 连接、Fluent 迁移 `users` `ledger_entries`（需求 7）
   - [ ] 3.1 本地 `docker compose` 起 Postgres
 - [ ] 4. `POST /v1/auth/apple`：验证 identity token、建号、发 5 点、签 JWT；`JWTAuthMiddleware`（需求 7.1）
