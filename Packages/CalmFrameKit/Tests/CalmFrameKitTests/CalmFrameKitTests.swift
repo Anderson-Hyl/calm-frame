@@ -6,7 +6,7 @@ import Testing
 
 @Suite("Mood")
 struct MoodTests {
-    @Test("所有 case 都可以往返 JSON 编解码")
+    @Test("All cases survive JSON round-trip encoding/decoding")
     func roundTripJSON() throws {
         let encoder = JSONEncoder()
         let decoder = JSONDecoder()
@@ -17,7 +17,7 @@ struct MoodTests {
         }
     }
 
-    @Test("rawValue 与设计文档一致")
+    @Test("rawValues match the design spec")
     func rawValues() {
         #expect(Mood.hectic.rawValue == "hectic")
         #expect(Mood.noisy.rawValue == "noisy")
@@ -31,7 +31,7 @@ struct MoodTests {
 
 @Suite("PaintingStyle")
 struct PaintingStyleTests {
-    @Test("所有 case 都可以往返 JSON 编解码")
+    @Test("All cases survive JSON round-trip encoding/decoding")
     func roundTripJSON() throws {
         let encoder = JSONEncoder()
         let decoder = JSONDecoder()
@@ -47,9 +47,9 @@ struct PaintingStyleTests {
 
 @Suite("DTOs")
 struct DTOTests {
-    @Test("PaintingRequest 往返 JSON")
+    @Test("PaintingRequest survives JSON round-trip")
     func paintingRequestRoundTrip() throws {
-        let request = PaintingRequest(mood: .hectic, style: .oilPainting1800s, locale: "zh-Hans")
+        let request = PaintingRequest(mood: .hectic, style: .oilPainting1800s, locale: "en")
         let encoder = JSONEncoder()
         let decoder = JSONDecoder()
         let data = try encoder.encode(request)
@@ -59,11 +59,11 @@ struct DTOTests {
         #expect(decoded.locale == request.locale)
     }
 
-    @Test("PaintingResponse caption 可为 nil")
+    @Test("PaintingResponse caption is optional and defaults to nil")
     func paintingResponseOptionalCaption() throws {
         let id = UUID()
         let url = URL(string: "https://example.com/painting.jpg")!
-        let response = PaintingResponse(id: id, imageURL: url, title: "静水湖面", fromCache: false, balance: 4)
+        let response = PaintingResponse(id: id, imageURL: url, title: "Still Lake", fromCache: false, balance: 4)
         let data = try JSONEncoder().encode(response)
         let decoded = try JSONDecoder().decode(PaintingResponse.self, from: data)
         #expect(decoded.caption == nil)
@@ -71,12 +71,12 @@ struct DTOTests {
         #expect(decoded.fromCache == false)
     }
 
-    @Test("balance 使用 Int，不含浮点")
+    @Test("balance is encoded as Int, not Double")
     func balanceIsInt() throws {
         let response = BalanceResponse(balance: 5)
         let data = try JSONEncoder().encode(response)
+        // Verify the JSON value is an integer, not a floating-point number.
         let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
-        // balance 必须是 NSNumber 且可转 Int，不能是 Double
         let rawBalance = json?["balance"]
         #expect(rawBalance is Int || rawBalance is NSNumber)
         if let n = rawBalance as? NSNumber {
@@ -84,7 +84,7 @@ struct DTOTests {
         }
     }
 
-    @Test("AuthRequest / AuthResponse 往返 JSON")
+    @Test("AuthRequest and AuthResponse survive JSON round-trip")
     func authRoundTrip() throws {
         let req = AuthRequest(identityToken: "eyJhbGciOi...")
         let res = AuthResponse(token: "server.jwt.token", balance: 5)
@@ -99,7 +99,7 @@ struct DTOTests {
         #expect(decodedRes.balance == 5)
     }
 
-    @Test("APIError.retryable 默认为 false")
+    @Test("APIError.retryable defaults to false")
     func apiErrorDefault() {
         let err = APIError(error: "something went wrong")
         #expect(err.retryable == false)
@@ -111,7 +111,7 @@ struct DTOTests {
 
 @Suite("APIRoutes")
 struct APIRoutesTests {
-    @Test("路由常量格式正确（以 / 开头，v1 前缀）")
+    @Test("All v1 route constants are prefixed with /v1/")
     func routeFormat() {
         let v1Routes = [
             APIRoutes.auth,
@@ -122,7 +122,7 @@ struct APIRoutesTests {
             APIRoutes.appStoreNotifications,
         ]
         for route in v1Routes {
-            #expect(route.hasPrefix("/v1/"), "路由 \(route) 应以 /v1/ 开头")
+            #expect(route.hasPrefix("/v1/"), "Route \(route) should start with /v1/")
         }
         #expect(APIRoutes.health == "/health")
     }
