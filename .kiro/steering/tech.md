@@ -19,6 +19,13 @@ inclusion: always
 - 对象存储：S3 兼容（Cloudflare R2 或 AWS S3），用 `Soto` 的 S3 模块
 - 部署：Docker（多阶段构建，swift:6.0-jammy → ubuntu:jammy），Fly.io 或 Render
 
+## 本地容器（Apple Container）
+- 本地开发用 Apple 开源的 `container` CLI（https://github.com/apple/container），不依赖 Docker Desktop
+- 本地 Postgres：`container run -d --name calmframe-db -e POSTGRES_USER=vapor -e POSTGRES_PASSWORD=vapor -e POSTGRES_DB=calmframe -p 5432:5432 postgres:16`
+- `container` 没有 compose：数据库和服务器分别启动；Vapor 默认在宿主机 `swift run` 运行，连 `localhost:5432`
+- 保留标准 `Dockerfile`（OCI 镜像），部署平台照常使用；本地可用 `container build` 验证镜像
+- 保留 `docker-compose.yml` 供有 Docker 的人使用，但文档以 `container` 为主
+
 ## 约定
 - 所有金额/点数用 `Int`，禁止浮点
 - 秘密只读环境变量：`ANTHROPIC_API_KEY`、`IMAGE_API_KEY`、`APPLE_*`、`JWT_SECRET`、`S3_*`、`DATABASE_URL`
