@@ -1,0 +1,25 @@
+# Local development only — starts a Postgres instance matching the DATABASE_URL default.
+# Usage:
+#   docker compose up -d          # start in background
+#   docker compose down -v        # stop and remove volume
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: calmframe
+      POSTGRES_PASSWORD: calmframe
+      POSTGRES_DB: calmframe
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U calmframe"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

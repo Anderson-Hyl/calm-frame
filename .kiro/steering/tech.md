@@ -11,7 +11,8 @@ inclusion: always
 - 网络层：`URLSession` + async/await，模型来自共享包 `CalmFrameKit`
 
 ## 后端
-- Vapor 4 + Fluent + PostgreSQL（`fluent-postgres-driver`）
+- Vapor 4（latest stable 4.x）+ Fluent + PostgreSQL（`fluent-postgres-driver`）
+- 编译目标：macOS 14+（开发）/ Linux Ubuntu Jammy（生产 Docker 镜像，`swift:6.0-jammy`）
 - `JWTKit`（验证 Apple identity token、签发自己的 server JWT）
 - `app-store-server-library-swift`（验证 StoreKit 2 交易 JWS、解析 App Store Server Notifications V2）
 - `AsyncHTTPClient` 调用 Claude（写 prompt）与图像模型（可插拔 `ImageProvider` 协议）
