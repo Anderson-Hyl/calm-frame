@@ -18,7 +18,7 @@
 - [x] 3. Vapor 工程：`/health`、Postgres 连接、Fluent 迁移 `users` `ledger_entries`（需求 7）
   - [x] 3.1 本地 `docker compose` 起 Postgres
   - [x] 3.2 新增 `scripts/db-up.sh` / `scripts/db-down.sh`，用 Apple `container` 启停本地 Postgres（参数见 tech.md），README 写明本地开发步骤；`.gitignore` 加 `.swiftpm/`
-- [ ] 4. `POST /v1/auth/apple`：验证 identity token、建号、发 5 点、签 JWT；`JWTAuthMiddleware`（需求 7.1）
+- [x] 4. `POST /v1/auth/apple`：验证 identity token、建号、发 5 点、签 JWT；`JWTAuthMiddleware`（需求 7.1）
 - [ ] 5. iOS：`AmbienceListener` + `SoundAnalysis`，只内存处理（需求 1.2、1.3）
 - [ ] 6. `MoodClassifier` 纯函数 + 属性测试（需求 1.4）
 - [ ] 7. 调试页：实时显示特征与 mood、手动 mood 模式（需求 1.5）

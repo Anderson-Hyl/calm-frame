@@ -1,13 +1,20 @@
+import FluentSQLiteDriver
 import XCTVapor
 @testable import App
 
 final class HealthTests: XCTestCase {
     func testHealthEndpoint() async throws {
         let app = try await Application.make(.testing)
-        defer { app.shutdown() }
-        try await configure(app)
+        defer { Task { try await app.asyncShutdown() } }
 
-        try app.test(.GET, "health") { res in
+        // Use in-memory SQLite so no real Postgres is required.
+        app.databases.use(.sqlite(.memory), as: .psql, isDefault: true)
+        app.migrations.add(CreateUsers())
+        app.migrations.add(CreateLedgerEntries())
+        try await app.autoMigrate()
+        try routes(app)
+
+        try await app.testable().test(.GET, "health") { res async throws in
             XCTAssertEqual(res.status, .ok)
             let body = try res.content.decode([String: String].self)
             XCTAssertEqual(body["status"], "ok")

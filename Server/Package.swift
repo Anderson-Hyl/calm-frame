@@ -14,6 +14,8 @@ let package = Package(
         .package(url: "https://github.com/vapor/fluent-postgres-driver.git", from: "2.14.0"),
         // JWT signing/verification (Vapor-4-compatible series)
         .package(url: "https://github.com/vapor/jwt-kit.git", from: "4.13.5"),
+        // SQLite driver for in-memory test databases
+        .package(url: "https://github.com/vapor/fluent-sqlite-driver.git", from: "4.8.0"),
         // Shared models — local package
         .package(name: "CalmFrameKit", path: "../Packages/CalmFrameKit"),
     ],
@@ -35,6 +37,7 @@ let package = Package(
             dependencies: [
                 .target(name: "App"),
                 .product(name: "XCTVapor", package: "vapor"),
+                .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver"),
             ],
             path: "Tests/AppTests",
             swiftSettings: swiftSettings

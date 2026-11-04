@@ -7,6 +7,9 @@ func routes(_ app: Application) throws {
     app.get("health") { _ async in
         HealthResponse(status: "ok")
     }
+
+    // Auth routes: POST /v1/auth/apple
+    try app.register(collection: AuthController())
 }
 
 // Server-internal only; not a shared DTO.
