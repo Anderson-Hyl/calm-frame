@@ -38,7 +38,7 @@ if container list --all 2>/dev/null | grep -q "^${CONTAINER_NAME}"; then
 fi
 
 echo "Pulling image ${POSTGRES_IMAGE} (if needed)..."
-container pull "${POSTGRES_IMAGE}"
+container image pull "${POSTGRES_IMAGE}"
 
 echo "Starting Postgres container '${CONTAINER_NAME}'..."
 container run \
