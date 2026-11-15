@@ -1,0 +1,444 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2CC446303822E0DC27D0908D /* PlaceholderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7ED0A8651FE8361130E0CF /* PlaceholderTests.swift */; };
+		3089E1D32B288B521BC6CD83 /* FrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790414931A13BD22FF01593 /* FrameView.swift */; };
+		8483285F28FEE2CFF9F9E629 /* CalmFrameKit in Frameworks */ = {isa = PBXBuildFile; productRef = C946D78274E8442E2E251E73 /* CalmFrameKit */; };
+		C97F241389B4771B96E8EC55 /* CalmFrameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2303B039613DE8380A7253 /* CalmFrameApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1D560DA788A8B20C069D6AC0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BCAEFBD5395316921E992A70 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 78DBEA95F6D143C766C00B02;
+			remoteInfo = CalmFrame;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		3790414931A13BD22FF01593 /* FrameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameView.swift; sourceTree = "<group>"; };
+		7C6FF20DE3C6BA3568ECB031 /* CalmFrameTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CalmFrameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		852182C9065F91ABEE8D7D29 /* CalmFrameKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CalmFrameKit; path = ../Packages/CalmFrameKit; sourceTree = SOURCE_ROOT; };
+		9C7ED0A8651FE8361130E0CF /* PlaceholderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTests.swift; sourceTree = "<group>"; };
+		9CD59CB3A6ACC76B4331914F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AE2303B039613DE8380A7253 /* CalmFrameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalmFrameApp.swift; sourceTree = "<group>"; };
+		AF015DAE2B993F69C57B5E1A /* CalmFrame.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = CalmFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C4886B7A2C0BBF02AA0BDD04 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8483285F28FEE2CFF9F9E629 /* CalmFrameKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		016154ECF87446E3A5E82B0C /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				852182C9065F91ABEE8D7D29 /* CalmFrameKit */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		164C3A225131A14B7B904DDF = {
+			isa = PBXGroup;
+			children = (
+				6E3B345F71D2745B2D4E25CF /* CalmFrame */,
+				A2D17B8C39F11F6ADE45953E /* CalmFrameTests */,
+				016154ECF87446E3A5E82B0C /* Packages */,
+				762B93C913DA1897730E55FE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6E3B345F71D2745B2D4E25CF /* CalmFrame */ = {
+			isa = PBXGroup;
+			children = (
+				AE2303B039613DE8380A7253 /* CalmFrameApp.swift */,
+				9CD59CB3A6ACC76B4331914F /* Info.plist */,
+				C44BC6BACB6A75C165126514 /* Frame */,
+			);
+			path = CalmFrame;
+			sourceTree = "<group>";
+		};
+		762B93C913DA1897730E55FE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AF015DAE2B993F69C57B5E1A /* CalmFrame.app */,
+				7C6FF20DE3C6BA3568ECB031 /* CalmFrameTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A2D17B8C39F11F6ADE45953E /* CalmFrameTests */ = {
+			isa = PBXGroup;
+			children = (
+				9C7ED0A8651FE8361130E0CF /* PlaceholderTests.swift */,
+			);
+			path = CalmFrameTests;
+			sourceTree = "<group>";
+		};
+		C44BC6BACB6A75C165126514 /* Frame */ = {
+			isa = PBXGroup;
+			children = (
+				3790414931A13BD22FF01593 /* FrameView.swift */,
+			);
+			path = Frame;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		78DBEA95F6D143C766C00B02 /* CalmFrame */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F49A1EBFEE1551CBDBE242C8 /* Build configuration list for PBXNativeTarget "CalmFrame" */;
+			buildPhases = (
+				C291A15EC0B2D2A13EE0B736 /* Sources */,
+				C4886B7A2C0BBF02AA0BDD04 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CalmFrame;
+			packageProductDependencies = (
+				C946D78274E8442E2E251E73 /* CalmFrameKit */,
+			);
+			productName = CalmFrame;
+			productReference = AF015DAE2B993F69C57B5E1A /* CalmFrame.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D9BA6F9B156BAB043D0E0C75 /* CalmFrameTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26FF8FDD297D4C23D807EEDB /* Build configuration list for PBXNativeTarget "CalmFrameTests" */;
+			buildPhases = (
+				D3F3CED00F4E7B873D915507 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				05B38CF1BF6A7776B34EA6F8 /* PBXTargetDependency */,
+			);
+			name = CalmFrameTests;
+			packageProductDependencies = (
+			);
+			productName = CalmFrameTests;
+			productReference = 7C6FF20DE3C6BA3568ECB031 /* CalmFrameTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BCAEFBD5395316921E992A70 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 880D7B108763296629BCCEEE /* Build configuration list for PBXProject "CalmFrame" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 164C3A225131A14B7B904DDF;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A1DBD6267525A426098BA380 /* XCLocalSwiftPackageReference "../Packages/CalmFrameKit" */,
+			);
+			preferredProjectObjectVersion = 54;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				78DBEA95F6D143C766C00B02 /* CalmFrame */,
+				D9BA6F9B156BAB043D0E0C75 /* CalmFrameTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C291A15EC0B2D2A13EE0B736 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C97F241389B4771B96E8EC55 /* CalmFrameApp.swift in Sources */,
+				3089E1D32B288B521BC6CD83 /* FrameView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3F3CED00F4E7B873D915507 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2CC446303822E0DC27D0908D /* PlaceholderTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		05B38CF1BF6A7776B34EA6F8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 78DBEA95F6D143C766C00B02 /* CalmFrame */;
+			targetProxy = 1D560DA788A8B20C069D6AC0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1E68CB0A94236A280DF9566D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		1F544BE633FF16887EE9DDF9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = CalmFrame/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.calmframe.app;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		2B12BBB90D613CFF166A3328 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		3784DD04B70CF587E4A5E325 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = CalmFrame/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.calmframe.app;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		887C48F631937B7683A04286 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.calmframe.CalmFrameTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CalmFrame.app/CalmFrame";
+			};
+			name = Release;
+		};
+		C5A407C2F74A38365EA48500 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.calmframe.CalmFrameTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CalmFrame.app/CalmFrame";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		26FF8FDD297D4C23D807EEDB /* Build configuration list for PBXNativeTarget "CalmFrameTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C5A407C2F74A38365EA48500 /* Debug */,
+				887C48F631937B7683A04286 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		880D7B108763296629BCCEEE /* Build configuration list for PBXProject "CalmFrame" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1E68CB0A94236A280DF9566D /* Debug */,
+				2B12BBB90D613CFF166A3328 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F49A1EBFEE1551CBDBE242C8 /* Build configuration list for PBXNativeTarget "CalmFrame" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3784DD04B70CF587E4A5E325 /* Debug */,
+				1F544BE633FF16887EE9DDF9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A1DBD6267525A426098BA380 /* XCLocalSwiftPackageReference "../Packages/CalmFrameKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/CalmFrameKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C946D78274E8442E2E251E73 /* CalmFrameKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CalmFrameKit;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = BCAEFBD5395316921E992A70 /* Project object */;
+}
