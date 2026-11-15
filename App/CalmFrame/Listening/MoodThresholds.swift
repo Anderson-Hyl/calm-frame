@@ -21,6 +21,9 @@ public struct MoodThresholds: Sendable, Equatable {
     public var drowsyStartHour: Int = 13
     /// drowsy 时间窗结束小时（不含），本地时间。
     public var drowsyEndHour: Int = 16
+    /// quietDrop：相对上一窗口的音量跌落（dB）。跌落超过此值即算“突然安静”
+    ///（需求 1.2）。工程默认值 12 dB，调试页以后可调。
+    public var quietDropDB: Double = 12
 
     public static let `default` = MoodThresholds()
 
