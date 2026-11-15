@@ -7,10 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2CC446303822E0DC27D0908D /* PlaceholderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7ED0A8651FE8361130E0CF /* PlaceholderTests.swift */; };
+		2686E027810CD4D757FB14DC /* MoodDebouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AE128398494E8F81E214B2 /* MoodDebouncer.swift */; };
 		3089E1D32B288B521BC6CD83 /* FrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790414931A13BD22FF01593 /* FrameView.swift */; };
+		4DD05110B1ABECC62A3EB62C /* MoodClassifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90039D192167A252BB2D47CA /* MoodClassifierTests.swift */; };
 		8483285F28FEE2CFF9F9E629 /* CalmFrameKit in Frameworks */ = {isa = PBXBuildFile; productRef = C946D78274E8442E2E251E73 /* CalmFrameKit */; };
+		AAF43CD5B70C5A1C1F6EB578 /* MoodDebouncerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5CFFC5D9C1235AC10BFCD5 /* MoodDebouncerTests.swift */; };
 		C97F241389B4771B96E8EC55 /* CalmFrameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2303B039613DE8380A7253 /* CalmFrameApp.swift */; };
+		CFE98F4D043AFA12239F6BC8 /* MoodClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251AEFA7D220590AF4989A87 /* MoodClassifier.swift */; };
+		F65CCBB8B0E89ADB274C7138 /* MoodThresholds.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03B364E70645259A9F31EDE /* MoodThresholds.swift */; };
+		FB81F7B434B747585431ACD1 /* AmbienceFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E82D58CA81D8A8236D7CE0E /* AmbienceFeatures.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,13 +29,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		251AEFA7D220590AF4989A87 /* MoodClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodClassifier.swift; sourceTree = "<group>"; };
 		3790414931A13BD22FF01593 /* FrameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameView.swift; sourceTree = "<group>"; };
+		67AE128398494E8F81E214B2 /* MoodDebouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodDebouncer.swift; sourceTree = "<group>"; };
+		6C5CFFC5D9C1235AC10BFCD5 /* MoodDebouncerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodDebouncerTests.swift; sourceTree = "<group>"; };
 		7C6FF20DE3C6BA3568ECB031 /* CalmFrameTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CalmFrameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		852182C9065F91ABEE8D7D29 /* CalmFrameKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CalmFrameKit; path = ../Packages/CalmFrameKit; sourceTree = SOURCE_ROOT; };
-		9C7ED0A8651FE8361130E0CF /* PlaceholderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTests.swift; sourceTree = "<group>"; };
+		90039D192167A252BB2D47CA /* MoodClassifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodClassifierTests.swift; sourceTree = "<group>"; };
 		9CD59CB3A6ACC76B4331914F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		9E82D58CA81D8A8236D7CE0E /* AmbienceFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmbienceFeatures.swift; sourceTree = "<group>"; };
 		AE2303B039613DE8380A7253 /* CalmFrameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalmFrameApp.swift; sourceTree = "<group>"; };
 		AF015DAE2B993F69C57B5E1A /* CalmFrame.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = CalmFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B03B364E70645259A9F31EDE /* MoodThresholds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodThresholds.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,12 +73,24 @@
 			);
 			sourceTree = "<group>";
 		};
+		4B46C4C54A44D0A050682A72 /* Listening */ = {
+			isa = PBXGroup;
+			children = (
+				9E82D58CA81D8A8236D7CE0E /* AmbienceFeatures.swift */,
+				251AEFA7D220590AF4989A87 /* MoodClassifier.swift */,
+				67AE128398494E8F81E214B2 /* MoodDebouncer.swift */,
+				B03B364E70645259A9F31EDE /* MoodThresholds.swift */,
+			);
+			path = Listening;
+			sourceTree = "<group>";
+		};
 		6E3B345F71D2745B2D4E25CF /* CalmFrame */ = {
 			isa = PBXGroup;
 			children = (
 				AE2303B039613DE8380A7253 /* CalmFrameApp.swift */,
 				9CD59CB3A6ACC76B4331914F /* Info.plist */,
 				C44BC6BACB6A75C165126514 /* Frame */,
+				4B46C4C54A44D0A050682A72 /* Listening */,
 			);
 			path = CalmFrame;
 			sourceTree = "<group>";
@@ -85,7 +107,8 @@
 		A2D17B8C39F11F6ADE45953E /* CalmFrameTests */ = {
 			isa = PBXGroup;
 			children = (
-				9C7ED0A8651FE8361130E0CF /* PlaceholderTests.swift */,
+				90039D192167A252BB2D47CA /* MoodClassifierTests.swift */,
+				6C5CFFC5D9C1235AC10BFCD5 /* MoodDebouncerTests.swift */,
 			);
 			path = CalmFrameTests;
 			sourceTree = "<group>";
@@ -177,8 +200,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB81F7B434B747585431ACD1 /* AmbienceFeatures.swift in Sources */,
 				C97F241389B4771B96E8EC55 /* CalmFrameApp.swift in Sources */,
 				3089E1D32B288B521BC6CD83 /* FrameView.swift in Sources */,
+				CFE98F4D043AFA12239F6BC8 /* MoodClassifier.swift in Sources */,
+				2686E027810CD4D757FB14DC /* MoodDebouncer.swift in Sources */,
+				F65CCBB8B0E89ADB274C7138 /* MoodThresholds.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,7 +213,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2CC446303822E0DC27D0908D /* PlaceholderTests.swift in Sources */,
+				4DD05110B1ABECC62A3EB62C /* MoodClassifierTests.swift in Sources */,
+				AAF43CD5B70C5A1C1F6EB578 /* MoodDebouncerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
