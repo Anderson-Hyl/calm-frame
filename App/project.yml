@@ -1,7 +1,7 @@
 # CalmFrame — XcodeGen spec (C1, 2026-11-15)
 # 生成：cd App && xcodegen generate
 # 输出：App/CalmFrame.xcodeproj（已提交，Xcode 可直接打开，无需额外工具）
-# 部署目标 iOS 26（方案 v2 批复），bundle ID dev.calmframe.app。
+# 部署目标 iOS 26（方案 v2 批复），bundle ID app.calmframe.dev。
 # 校验：xcodebuild -list；再分别往 iPhone / iPad 模拟器构建（见 C1 验收）。
 # C4/C5：CalmFrame/Frame/Paintings/ 下每 mood 1 张内置画打进 bundle。
 
@@ -24,7 +24,7 @@ targets:
       - path: CalmFrame
     resources:
       - path: CalmFrame/Frame/Paintings
-    bundleId: dev.calmframe.app
+    bundleId: app.calmframe.dev
     info:
       path: CalmFrame/Info.plist
       properties:
@@ -36,28 +36,42 @@ targets:
         NSMicrophoneUsageDescription: "Calm Frame 需要使用麦克风聆听周围的环境声，判断房间氛围。音频只在设备端分析，不录音、不上传。"
     entitlements:
       path: CalmFrame/CalmFrame.entitlements
+      # 注意：xcodegen generate 会按这里的 properties 重写 entitlements 文件。
+      # 直接改文件会被下一次 generate 抹成空 dict（auth 切片就是这么丢掉
+      # applesignin 的，登录一直报 Code=1000）——能力必须写在这里。
+      properties:
+        com.apple.developer.applesignin:
+          - Default
     dependencies:
       - package: CalmFrameKit
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: dev.calmframe.app
+        PRODUCT_BUNDLE_IDENTIFIER: app.calmframe.dev
         MARKETING_VERSION: 0.1.0
         CURRENT_PROJECT_VERSION: 1
         TARGETED_DEVICE_FAMILY: "1,2"
         IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+        # 真机联调需要签名：用用户在开发者门户上已付费的个人团队 J24ZKG6Q2X
+        #（账号 stareraadaspace@163.com，个人注册，Apple Developer Program）。
+        # 注意：5N32Y4PJMN（永乐 黄的开发证书团队）不是门户上的付费团队，
+        # App ID 与 Sign in with Apple 能力都在 J24ZKG6Q2X 下，别再切回去。
+        DEVELOPMENT_TEAM: J24ZKG6Q2X
+        CODE_SIGN_STYLE: Automatic
 
   CalmFrameTests:
     type: bundle.unit-test
     platform: iOS
     sources:
       - path: CalmFrameTests
-    bundleId: dev.calmframe.app.tests
+    bundleId: app.calmframe.dev.tests
     dependencies:
       - target: CalmFrame
     settings:
       base:
         IPHONEOS_DEPLOYMENT_TARGET: "26.0"
         GENERATE_INFOPLIST_FILE: "YES"
+        DEVELOPMENT_TEAM: J24ZKG6Q2X
+        CODE_SIGN_STYLE: Automatic
 
 schemes:
   CalmFrame:
@@ -67,6 +81,13 @@ schemes:
         CalmFrameTests: all
     run:
       config: Debug
+      # 真机联调：把服务端地址指到 Mac 的局域网 IP。
+      # 2026-11-16 16:51 起走手机个人热点（Wi-Fi）：Mac 连上 iPhone 热点后在 en0 上
+      # 拿到 172.20.10.13，手机同一网段可达。USB 那条路 DHCP 一直不分配（只有
+      # 169.254 链路本地地址，手机打不开），已弃用。
+      # 模拟器不用这个参数时走默认 localhost:8080；IP 变了就改这里再 xcodegen。
+      commandLineArguments:
+        "--api-base-url http://172.20.10.13:8080": true
     test:
       config: Debug
       targets:

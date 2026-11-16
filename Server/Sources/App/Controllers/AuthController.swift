@@ -43,7 +43,7 @@ struct AuthController: RouteCollection {
         let body = try req.content.decode(AuthRequest.self)
 
         // 2. Read config from environment.
-        let bundleID = Environment.get("APPLE_BUNDLE_ID") ?? "dev.calmframe.app"
+        let bundleID = Environment.get("APPLE_BUNDLE_ID") ?? "app.calmframe.dev"
 
         // 3. Verify Apple identity token → appleSub.
         let appleSub: String

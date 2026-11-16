@@ -11,7 +11,7 @@ public protocol KeychainStoring: Sendable {
 public final class KeychainStore: KeychainStoring {
     private let service: String
 
-    public init(service: String = "dev.calmframe.app") {
+    public init(service: String = "app.calmframe.dev") {
         self.service = service
     }
 
