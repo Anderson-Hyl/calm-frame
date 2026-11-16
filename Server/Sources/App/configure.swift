@@ -13,6 +13,12 @@ public func configure(_ app: Application) async throws {
     signers.use(.hs256(key: jwtSecret))
     app.jwtSigners = signers
 
+    // MARK: - App Store (StoreKit JWS verification)
+    // Built from the environment + the bundled Apple Root CA - G3 certificate.
+    // Throws at startup if the certificate is missing — a fail-fast for a
+    // security-critical configuration error.
+    app.appStoreVerifier = try LiveAppStoreVerifier.fromEnvironment(workingDirectory: app.directory.workingDirectory)
+
     // MARK: - Database
     // Read the connection URL from the environment.
     // The default matches docker-compose.yml for local development.
@@ -24,6 +30,7 @@ public func configure(_ app: Application) async throws {
     // MARK: - Migrations
     app.migrations.add(CreateUsers())
     app.migrations.add(CreateLedgerEntries())
+    app.migrations.add(CreateAppStoreNotifications())
     try await app.autoMigrate()
 
     // MARK: - Routes

@@ -22,7 +22,7 @@ private func makeCreditsApp() async throws -> Application {
     try await app.autoMigrate()
 
     // Register credits route.
-    try app.register(collection: CreditsController())
+    try app.register(collection: CreditsController(appStoreVerifier: FakeAppStoreVerifier()))
     return app
 }
 

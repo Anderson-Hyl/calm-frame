@@ -12,6 +12,9 @@ final class HealthTests: XCTestCase {
         app.migrations.add(CreateUsers())
         app.migrations.add(CreateLedgerEntries())
         try await app.autoMigrate()
+        // routes() needs the App Store verifier configured (as configure() does
+        // in production); the health endpoint itself never uses it, so the fake is enough.
+        app.appStoreVerifier = FakeAppStoreVerifier()
         try routes(app)
 
         try await app.testable().test(.GET, "health") { res async throws in
