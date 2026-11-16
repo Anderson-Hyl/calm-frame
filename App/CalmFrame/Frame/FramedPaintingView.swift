@@ -3,7 +3,7 @@ import SwiftUI
 /// 相框本体（C4，方案节点 4）：鎏金框 + crossfade 画作 + 铭牌 + caption。
 /// 首页与相框模式共用这一个视图；区别只在外层是否隐藏控件、禁锁屏。
 struct FramedPaintingView: View {
-    @ObservedObject var viewModel: FrameViewModel
+    let viewModel: FrameViewModel
 
     var body: some View {
         ZStack {
@@ -42,24 +42,28 @@ struct FramedPaintingView: View {
     /// 画作区：旧图留底、新图按 transitionOpacity 淡入（3 秒）。
     /// 图没加载出来时是深色底，永不白屏。
     private var paintingArea: some View {
-        ZStack {
-            Color(red: 0.12, green: 0.10, blue: 0.08)
-            if let previous = viewModel.previousPainting,
-               let image = BundledPaintings.image(for: previous) {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
+        // 尺寸由 4:3 的占位色块决定；图片放在 overlay 里，scaledToFill 的
+        // 溢出不会再把外层撑出屏幕（之前画作左右溢出、金框侧边被挤没）。
+        Color(red: 0.12, green: 0.10, blue: 0.08)
+            .aspectRatio(4 / 3, contentMode: .fit)
+            .overlay {
+                ZStack {
+                    if let previous = viewModel.previousPainting,
+                       let image = BundledPaintings.image(for: previous) {
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFill()
+                    }
+                    if let image = BundledPaintings.image(for: viewModel.currentPainting) {
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFill()
+                            .opacity(viewModel.transitionOpacity)
+                    }
+                }
             }
-            if let image = BundledPaintings.image(for: viewModel.currentPainting) {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .opacity(viewModel.transitionOpacity)
-            }
-        }
-        .aspectRatio(4 / 3, contentMode: .fit)
-        .clipped()
-        .overlay(Rectangle().stroke(.black.opacity(0.5), lineWidth: 2))
+            .clipped()
+            .overlay(Rectangle().stroke(.black.opacity(0.5), lineWidth: 2))
     }
 
     /// 铭牌：深铜底 + 金字；caption 开启时在下一行显示一句话。

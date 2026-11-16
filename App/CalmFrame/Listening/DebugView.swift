@@ -4,9 +4,9 @@ import SwiftUI
 /// 调试图（tasks.md 任务 7，需求 1.5）：实时显示特征与 mood、手动 mood 模式。
 /// 入口：相框页右上角“调试”；启动参数 `--debug` 可直接进本页（用于截图验证）。
 struct DebugView: View {
-    @ObservedObject var viewModel: ListeningViewModel
-    @ObservedObject var frameViewModel: FrameViewModel
-    @ObservedObject var authViewModel: AuthViewModel
+    @Bindable var viewModel: ListeningViewModel
+    @Bindable var frameViewModel: FrameViewModel
+    @Bindable var authViewModel: AuthViewModel
 
     var body: some View {
         List {

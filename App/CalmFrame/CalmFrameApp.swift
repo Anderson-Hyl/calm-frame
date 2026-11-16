@@ -19,9 +19,9 @@ extension CalmFrameApp {
 
 @main
 struct CalmFrameApp: App {
-    @StateObject private var listeningViewModel: ListeningViewModel
-    @StateObject private var frameViewModel = FrameViewModel()
-    @StateObject private var authViewModel: AuthViewModel
+    @State private var listeningViewModel: ListeningViewModel
+    @State private var frameViewModel = FrameViewModel()
+    @State private var authViewModel: AuthViewModel
     @State private var path = NavigationPath()
 
     private let mockConfiguration: MockListeningConfiguration?
@@ -33,14 +33,14 @@ struct CalmFrameApp: App {
         // 真机联调用：--api-base-url <url> 覆盖服务端地址（默认 localhost:8080 只在
         // 模拟器上通，真机上的 localhost 是手机自己）。不用这个参数时行为不变。
         let apiBaseURL = CalmFrameApp.apiBaseURLFromArguments() ?? AuthViewModel.localBaseURL
-        _authViewModel = StateObject(wrappedValue: AuthViewModel(baseURL: apiBaseURL))
+        _authViewModel = State(wrappedValue: AuthViewModel(baseURL: apiBaseURL))
         let engine: any ListeningEngine
         if let mock = mockConfiguration {
             engine = MockListeningEngine(moods: mock.moods, cycleSeconds: mock.cycleSeconds)
         } else {
             engine = AmbienceListener()
         }
-        _listeningViewModel = StateObject(wrappedValue: ListeningViewModel(engine: engine))
+        _listeningViewModel = State(wrappedValue: ListeningViewModel(engine: engine))
     }
 
     var body: some Scene {

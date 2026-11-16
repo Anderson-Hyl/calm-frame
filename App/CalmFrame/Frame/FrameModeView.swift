@@ -4,7 +4,7 @@ import SwiftUI
 /// 点画面本轮什么都不做（呼吸引导是 W3 任务 21）；
 /// 退出靠系统手势（Home / 切 App），验证时用启动参数 `--frame-mode` 直接进入。
 struct FrameModeView: View {
-    @ObservedObject var viewModel: FrameViewModel
+    let viewModel: FrameViewModel
 
     var body: some View {
         FramedPaintingView(viewModel: viewModel)

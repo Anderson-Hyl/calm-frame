@@ -1,11 +1,13 @@
 import CalmFrameKit
 import Foundation
+import Observation
 import SwiftUI
 
 /// 聆听调试页的状态机（@MainActor）。拥有 `ListeningEngine`，把窗口结果翻译成
 /// 调试页能显示的状态；不直接碰 AVAudioEngine（测试时用替身引擎注入）。
 @MainActor
-public final class ListeningViewModel: ObservableObject {
+@Observable
+public final class ListeningViewModel {
 
     public enum Mode: String, CaseIterable, Sendable {
         case auto = "自动"
@@ -21,19 +23,19 @@ public final class ListeningViewModel: ObservableObject {
         public var confidence: Double
     }
 
-    @Published public private(set) var permission: ListeningPermission = .unknown
-    @Published public private(set) var state: ListeningState = .idle
-    @Published public var mode: Mode = .auto
+    public private(set) var permission: ListeningPermission = .unknown
+    public private(set) var state: ListeningState = .idle
+    public var mode: Mode = .auto
     /// 采样间隔（分钟）。可选 3/5/10；1 分钟仅供调试（窗口仍是 30 秒）。
-    @Published public var intervalMinutes: Int = 5
-    @Published public private(set) var lastFeatures: AmbienceFeatures?
-    @Published public private(set) var lastMood: Mood?
-    @Published public private(set) var lastConfidence: Double?
-    @Published public private(set) var stableMood: Mood?
-    @Published public var manualMood: Mood?
-    @Published public private(set) var recentWindows: [WindowRecord] = []
-    @Published public var isExplainerPresented = false
-    @Published public private(set) var errorMessage: String?
+    public var intervalMinutes: Int = 5
+    public private(set) var lastFeatures: AmbienceFeatures?
+    public private(set) var lastMood: Mood?
+    public private(set) var lastConfidence: Double?
+    public private(set) var stableMood: Mood?
+    public var manualMood: Mood?
+    public private(set) var recentWindows: [WindowRecord] = []
+    public var isExplainerPresented = false
+    public private(set) var errorMessage: String?
 
     /// 当前生效的 mood：手动模式用手动选择，否则用防抖后的稳定 mood（没有则用最近窗口的）。
     public var currentMood: Mood? {
@@ -44,8 +46,8 @@ public final class ListeningViewModel: ObservableObject {
     public static let intervalOptions = [1, 3, 5, 10]
 
     private let engine: any ListeningEngine
-    private var updatesTask: Task<Void, Never>?
-    private var stateTask: Task<Void, Never>?
+    @ObservationIgnored private var updatesTask: Task<Void, Never>?
+    @ObservationIgnored private var stateTask: Task<Void, Never>?
 
     /// `hasShownExplainer` 存 UserDefaults：首次开启聆听先弹说明页，再弹系统权限。
     public var hasShownExplainer: Bool {

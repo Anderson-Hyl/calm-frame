@@ -30,6 +30,9 @@ targets:
       properties:
         NSAppTransportSecurity:
           NSAllowsLocalNetworking: true
+        # 布局修复：没有 UILaunchScreen 时系统把 App 当旧尺寸应用，只占屏幕中间一块。
+        # 同样要写在这里，不能只改 Info.plist 文件（xcodegen 会覆盖）。
+        UILaunchScreen: {}
         # C2 的决定：麦克风只在设备端分析、不录音、不上传。
         # 注意：直接改 Info.plist 文件会被 xcodegen 的“Generating plists”盖掉，
         # 所以这两个键必须写在这里，xcodegen 生成时才会带上。

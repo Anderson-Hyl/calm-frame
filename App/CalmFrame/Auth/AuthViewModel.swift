@@ -1,20 +1,22 @@
 import AuthenticationServices
 import CalmFrameKit
 import Foundation
+import Observation
 import SwiftUI
 
 /// 登录的协调者（@MainActor）：AuthService 拿 identityToken → APIClient 换服务端 JWT
 /// → SessionStore 存 Keychain；401 时静默重登一次，仍失败则回未登录态。
 @MainActor
-public final class AuthViewModel: ObservableObject {
-    @Published public private(set) var isSignedIn = false
-    @Published public private(set) var balance: Int?
-    @Published public private(set) var isSigningIn = false
-    @Published public private(set) var errorMessage: String?
+@Observable
+public final class AuthViewModel {
+    public private(set) var isSignedIn = false
+    public private(set) var balance: Int?
+    public private(set) var isSigningIn = false
+    public private(set) var errorMessage: String?
 
     private let authService: any AuthService
     private let session: SessionStore
-    private var apiClient: APIClient
+    @ObservationIgnored private var apiClient: APIClient
 
     /// 本地联调 base URL：Mac 上跑着的 Vapor 服务（模拟器与 Mac 共用网络栈）。
     public static let localBaseURL = URL(string: "http://localhost:8080")!

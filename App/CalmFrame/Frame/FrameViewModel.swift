@@ -1,20 +1,22 @@
 import CalmFrameKit
 import Foundation
+import Observation
 import SwiftUI
 
 /// 相框的状态机（@MainActor）：mood → 内置画，换画时做 3 秒 crossfade。
 /// 不碰麦克风、不碰网络；远端画作（APIClient）本轮不接线（无真 JWT），
 /// 离线画就是完整通路（方案节点 4）。
 @MainActor
-public final class FrameViewModel: ObservableObject {
+@Observable
+public final class FrameViewModel {
 
     /// crossfade 时长（方案节点 4：≥ 3 秒，录屏计时）。
     public static let crossfadeDuration: TimeInterval = 3.0
 
-    @Published public private(set) var currentPainting: BundledPainting
-    @Published public private(set) var previousPainting: BundledPainting?
-    @Published public private(set) var transitionOpacity: Double = 1
-    @Published public var captionEnabled = true
+    public private(set) var currentPainting: BundledPainting
+    public private(set) var previousPainting: BundledPainting?
+    public private(set) var transitionOpacity: Double = 1
+    public var captionEnabled = true
 
     public private(set) var currentMood: Mood
 
@@ -29,7 +31,7 @@ public final class FrameViewModel: ObservableObject {
     }
 
     private let transitionDuration: TimeInterval
-    private var cleanupTask: Task<Void, Never>?
+    @ObservationIgnored private var cleanupTask: Task<Void, Never>?
 
     public init(initialMood: Mood = .calm, transitionDuration: TimeInterval = crossfadeDuration) {
         self.currentMood = initialMood
