@@ -6,10 +6,12 @@ import SwiftUI
 struct DebugView: View {
     @ObservedObject var viewModel: ListeningViewModel
     @ObservedObject var frameViewModel: FrameViewModel
+    @ObservedObject var authViewModel: AuthViewModel
 
     var body: some View {
         List {
             statusSection
+            authSection
             currentWindowSection
             samplingSection
             modeSection
@@ -74,6 +76,41 @@ struct DebugView: View {
         case .denied: return "权限被拒"
         case .unavailable: return "无麦克风"
         case .error(let message): return "出错：\(message)"
+        }
+    }
+
+    // MARK: - 账户（Auth 切片）
+
+    /// 登录入口与状态。用普通 Button 走 AuthViewModel.signIn()，不直接用
+    /// SignInWithAppleButton——授权整条路收在 AuthService 里，只有一个代码路径，
+    /// 测试替身 MockAuthService 才能替掉它。
+    private var authSection: some View {
+        Section("账户") {
+            if authViewModel.isSignedIn {
+                HStack {
+                    Text("余额")
+                    Spacer()
+                    Text(authViewModel.balance.map { "\($0) 点" } ?? "—")
+                        .foregroundStyle(.secondary)
+                }
+                Button("退出登录", role: .destructive) {
+                    authViewModel.signOut()
+                }
+            } else {
+                Button("用 Apple 登录") {
+                    Task { await authViewModel.signIn() }
+                }
+                .disabled(authViewModel.isSigningIn)
+                if authViewModel.isSigningIn {
+                    ProgressView("登录中…")
+                }
+                Text("登录后服务端发放 5 点 starter credits；长期凭证是服务端 JWT，存在钥匙串里。")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            if let error = authViewModel.errorMessage {
+                Text(error).foregroundStyle(.red)
+            }
         }
     }
 

@@ -9,6 +9,7 @@ enum DebugRoute: Hashable {
 struct CalmFrameApp: App {
     @StateObject private var listeningViewModel: ListeningViewModel
     @StateObject private var frameViewModel = FrameViewModel()
+    @StateObject private var authViewModel = AuthViewModel()
     @State private var path = NavigationPath()
 
     private let mockConfiguration: MockListeningConfiguration?
@@ -35,7 +36,11 @@ struct CalmFrameApp: App {
                     autoFrameMode: autoFrameMode
                 )
                 .navigationDestination(for: DebugRoute.self) { _ in
-                    DebugView(viewModel: listeningViewModel, frameViewModel: frameViewModel)
+                    DebugView(
+                        viewModel: listeningViewModel,
+                        frameViewModel: frameViewModel,
+                        authViewModel: authViewModel
+                    )
                 }
             }
             .onAppear {
@@ -47,6 +52,7 @@ struct CalmFrameApp: App {
                     listeningViewModel.hasShownExplainer = true
                     listeningViewModel.startListening()
                 }
+                Task { await authViewModel.restoreSession() }
             }
         }
     }

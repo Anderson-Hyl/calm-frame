@@ -18,5 +18,12 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Calm Frame 需要使用麦克风聆听周围的环境声，判断房间氛围。音频只在设备端分析，不录音、不上传。</string>
 </dict>
 </plist>

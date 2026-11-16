@@ -27,6 +27,15 @@ targets:
     bundleId: dev.calmframe.app
     info:
       path: CalmFrame/Info.plist
+      properties:
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+        # C2 的决定：麦克风只在设备端分析、不录音、不上传。
+        # 注意：直接改 Info.plist 文件会被 xcodegen 的“Generating plists”盖掉，
+        # 所以这两个键必须写在这里，xcodegen 生成时才会带上。
+        NSMicrophoneUsageDescription: "Calm Frame 需要使用麦克风聆听周围的环境声，判断房间氛围。音频只在设备端分析，不录音、不上传。"
+    entitlements:
+      path: CalmFrame/CalmFrame.entitlements
     dependencies:
       - package: CalmFrameKit
     settings:
