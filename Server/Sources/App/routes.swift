@@ -10,6 +10,7 @@ func routes(_ app: Application) throws {
 
     // Auth routes: POST /v1/auth/apple
     try app.register(collection: AuthController())
+    try app.register(collection: CreditsController())
 }
 
 // Server-internal only; not a shared DTO.
