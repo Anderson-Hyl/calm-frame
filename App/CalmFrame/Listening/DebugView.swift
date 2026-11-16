@@ -5,6 +5,7 @@ import SwiftUI
 /// 入口：相框页右上角“调试”；启动参数 `--debug` 可直接进本页（用于截图验证）。
 struct DebugView: View {
     @ObservedObject var viewModel: ListeningViewModel
+    @ObservedObject var frameViewModel: FrameViewModel
 
     var body: some View {
         List {
@@ -12,6 +13,7 @@ struct DebugView: View {
             currentWindowSection
             samplingSection
             modeSection
+            frameSection
             recentWindowsSection
         }
         .navigationTitle("聆听调试")
@@ -166,6 +168,27 @@ struct DebugView: View {
                     .foregroundStyle(.primary)
                 }
             }
+        }
+    }
+
+    // MARK: - 相框（C4）
+
+    private var frameSection: some View {
+        Section("相框") {
+            HStack {
+                Text("正在展示")
+                Spacer()
+                Text(frameViewModel.currentPainting.title)
+                    .foregroundStyle(.secondary)
+            }
+            HStack {
+                Text("铭牌")
+                Spacer()
+                Text(frameViewModel.nameplateText)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.trailing)
+            }
+            Toggle("显示一句话", isOn: $frameViewModel.captionEnabled)
         }
     }
 

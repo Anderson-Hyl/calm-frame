@@ -1,30 +1,42 @@
 import SwiftUI
 
-/// C1 空壳相框：占位色块 + 铭牌占位。业务逻辑（聆听、分类器、真画作、crossfade）
-/// 在后续节点里接进来，本文件只保证工程能跑起来。
-/// 右上角“调试”进聆听调试页（C2）；相框模式（C4）会隐藏全部控件。
+/// 相框首页（C4）：画框 + 铭牌 + caption；右上角进调试页、进相框模式。
+/// mood 变化由 ListeningViewModel 驱动，FrameViewModel 只管画作切换。
 struct FrameView: View {
+    @ObservedObject var listeningViewModel: ListeningViewModel
+    @ObservedObject var frameViewModel: FrameViewModel
+    var autoFrameMode: Bool = false
+
+    @State private var showingFrameMode = false
+
     var body: some View {
-        ZStack {
-            Color(red: 0.12, green: 0.10, blue: 0.08)
-            VStack(spacing: 12) {
-                Text("房间：— · 正在展示：—")
-                    .font(.headline)
-                    .foregroundStyle(.white)
-                Text("Calm Frame · 占位")
-                    .font(.caption)
-                    .foregroundStyle(.white.opacity(0.7))
+        FramedPaintingView(viewModel: frameViewModel)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("相框") { showingFrameMode = true }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink("调试", value: DebugRoute.debug)
+                }
             }
-        }
-        .ignoresSafeArea()
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                NavigationLink("调试", value: DebugRoute.debug)
+            .fullScreenCover(isPresented: $showingFrameMode) {
+                FrameModeView(viewModel: frameViewModel)
             }
-        }
+            .onChange(of: listeningViewModel.currentMood) { _, newMood in
+                frameViewModel.setMood(newMood)
+            }
+            .onAppear {
+                frameViewModel.setMood(listeningViewModel.currentMood)
+                if autoFrameMode {
+                    showingFrameMode = true
+                }
+            }
     }
 }
 
 #Preview {
-    FrameView()
+    FrameView(
+        listeningViewModel: ListeningViewModel(),
+        frameViewModel: FrameViewModel()
+    )
 }
