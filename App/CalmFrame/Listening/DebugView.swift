@@ -7,11 +7,13 @@ struct DebugView: View {
     @Bindable var viewModel: ListeningViewModel
     @Bindable var frameViewModel: FrameViewModel
     @Bindable var authViewModel: AuthViewModel
+    @Bindable var storeViewModel: StoreViewModel
 
     var body: some View {
         List {
             statusSection
             authSection
+            storeSection
             currentWindowSection
             samplingSection
             modeSection
@@ -111,6 +113,53 @@ struct DebugView: View {
             if let error = authViewModel.errorMessage {
                 Text(error).foregroundStyle(.red)
             }
+        }
+    }
+
+    // MARK: - 充值（购买切片 B4）
+
+    /// 购买入口只放调试页，不动相框。商品行用 StoreKit 的 displayName +
+    /// 本地化价格；未登录也能看到商品与价格，购买按钮禁用（价格是公开信息，
+    /// 买才要登录）。余额以服务端 GET /v1/credits 为准，不在客户端本地维护。
+    private var storeSection: some View {
+        Section("充值") {
+            if !authViewModel.isSignedIn {
+                Text("先登录，再购买点数。").foregroundStyle(.secondary)
+            }
+            if storeViewModel.isLoadingProducts {
+                ProgressView("正在加载商品…")
+            } else if storeViewModel.products.isEmpty {
+                if authViewModel.isSignedIn {
+                    Text("没有可用商品").foregroundStyle(.secondary)
+                    Button("重试") {
+                        Task { await storeViewModel.loadProducts() }
+                    }
+                }
+            } else {
+                ForEach(storeViewModel.products) { product in
+                    HStack {
+                        Text(product.displayName)
+                        Spacer()
+                        Text(product.displayPrice).foregroundStyle(.secondary)
+                        Button("购买") {
+                            Task { await storeViewModel.purchase(productID: product.id) }
+                        }
+                        .disabled(!authViewModel.isSignedIn || storeViewModel.isPurchasing)
+                    }
+                }
+                if storeViewModel.isPurchasing {
+                    ProgressView("购买中…")
+                }
+            }
+            if let message = storeViewModel.purchaseMessage {
+                Text(message).foregroundStyle(.green)
+            }
+            if let error = storeViewModel.errorMessage {
+                Text(error).foregroundStyle(.red)
+            }
+        }
+        .task {
+            await storeViewModel.loadProducts()
         }
     }
 

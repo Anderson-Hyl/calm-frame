@@ -71,6 +71,34 @@ public struct APIClient: Sendable {
         return request
     }
 
+    // MARK: - Credits（购买切片 B2）
+
+    /// POST /v1/credits/redeem：把 StoreKit 2 的 jwsRepresentation 原样发给服务端
+    /// 验签记账。需要 token；401 由调用方决定是否静默重登。返回服务端记账后的新余额。
+    public func redeem(signedTransaction: String) async throws -> BalanceResponse {
+        guard let token, let request = makeRedeemRequest(signedTransaction: signedTransaction, token: token) else {
+            throw APIClientError.unauthorized
+        }
+        let data = try await data(for: request)
+        do {
+            return try JSONDecoder().decode(BalanceResponse.self, from: data)
+        } catch {
+            throw APIClientError.decoding
+        }
+    }
+
+    /// 纯函数：组装 POST /v1/credits/redeem 请求（可单测）。
+    /// body 用 Kit 的 RedeemRequest（signedTransaction 原样，不解析、不改写）。
+    public func makeRedeemRequest(signedTransaction: String, token: String) -> URLRequest? {
+        let url = baseURL.appendingPathComponent("v1/credits/redeem")
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try? JSONEncoder().encode(RedeemRequest(signedTransaction: signedTransaction))
+        return request.httpBody == nil ? nil : request
+    }
+
     // MARK: - Paintings（C4，token 改由 SessionStore 经 AuthViewModel 同步）
 
     /// 有 token 才发请求；无 token 返回 nil，且不产生任何网络流量。

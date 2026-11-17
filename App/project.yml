@@ -84,6 +84,11 @@ schemes:
         CalmFrameTests: all
     run:
       config: Debug
+      # 购买切片 B5：模拟器用本地 StoreKit Configuration 跑通购买全程
+      #（商品 ¥6 / ¥25，见 CalmFrame.storekit）。若 generate 后 scheme 里
+      # 没有 storeKitConfiguration，说明这版 XcodeGen 不支持该声明，
+      # 改在 Xcode 里设并在每次 generate 后复验（与 entitlements 同类坑）。
+      storeKitConfiguration: CalmFrame/CalmFrame.storekit
       # 真机联调：把服务端地址指到 Mac 的局域网 IP。
       # 2026-11-16 16:51 起走手机个人热点（Wi-Fi）：Mac 连上 iPhone 热点后在 en0 上
       # 拿到 172.20.10.13，手机同一网段可达。USB 那条路 DHCP 一直不分配（只有
@@ -93,5 +98,8 @@ schemes:
         "--api-base-url http://172.20.10.13:8080": true
     test:
       config: Debug
+      # 购买切片 B5：单测里的真 StoreKit 走同一份 .storekit 配置
+      #（testLiveStoreServiceLoadsProductsFromStoreKitConfiguration 靠它拉商品）。
+      storeKitConfiguration: CalmFrame/CalmFrame.storekit
       targets:
         - CalmFrameTests

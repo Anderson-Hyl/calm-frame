@@ -22,6 +22,7 @@ struct CalmFrameApp: App {
     @State private var listeningViewModel: ListeningViewModel
     @State private var frameViewModel = FrameViewModel()
     @State private var authViewModel: AuthViewModel
+    @State private var storeViewModel: StoreViewModel
     @State private var path = NavigationPath()
 
     private let mockConfiguration: MockListeningConfiguration?
@@ -33,7 +34,12 @@ struct CalmFrameApp: App {
         // 真机联调用：--api-base-url <url> 覆盖服务端地址（默认 localhost:8080 只在
         // 模拟器上通，真机上的 localhost 是手机自己）。不用这个参数时行为不变。
         let apiBaseURL = CalmFrameApp.apiBaseURLFromArguments() ?? AuthViewModel.localBaseURL
-        _authViewModel = State(wrappedValue: AuthViewModel(baseURL: apiBaseURL))
+        // 购买切片：AuthViewModel 与 StoreViewModel 共用同一个 SessionStore——
+        // token 只有一份来源（Keychain），静默重登换新 token 后两边都读到新的。
+        let session = SessionStore()
+        let authVM = AuthViewModel(session: session, baseURL: apiBaseURL)
+        _authViewModel = State(wrappedValue: authVM)
+        _storeViewModel = State(wrappedValue: StoreViewModel(session: session, authViewModel: authVM, baseURL: apiBaseURL))
         let engine: any ListeningEngine
         if let mock = mockConfiguration {
             engine = MockListeningEngine(moods: mock.moods, cycleSeconds: mock.cycleSeconds)
@@ -55,7 +61,8 @@ struct CalmFrameApp: App {
                     DebugView(
                         viewModel: listeningViewModel,
                         frameViewModel: frameViewModel,
-                        authViewModel: authViewModel
+                        authViewModel: authViewModel,
+                        storeViewModel: storeViewModel
                     )
                 }
             }
@@ -69,6 +76,7 @@ struct CalmFrameApp: App {
                     listeningViewModel.startListening()
                 }
                 Task { await authViewModel.restoreSession() }
+                storeViewModel.startUnfinishedTransactionListener()
             }
         }
     }

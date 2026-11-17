@@ -24,11 +24,12 @@ public final class AuthViewModel {
     public init(
         authService: any AuthService = LiveAuthService(),
         session: SessionStore = SessionStore(),
-        baseURL: URL = AuthViewModel.localBaseURL
+        baseURL: URL = AuthViewModel.localBaseURL,
+        urlSession: URLSession = .shared
     ) {
         self.authService = authService
         self.session = session
-        self.apiClient = APIClient(baseURL: baseURL, token: session.serverToken)
+        self.apiClient = APIClient(baseURL: baseURL, token: session.serverToken, session: urlSession)
         self.isSignedIn = session.isSignedIn
         self.balance = session.balance
     }
@@ -94,15 +95,15 @@ public final class AuthViewModel {
             balance = value
             isSignedIn = true
         } catch APIClientError.unauthorized {
-            await silentReLoginThenRetry()
+            _ = await silentReLogin()
         } catch {
             errorMessage = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
         }
     }
 
-    /// 静默重登：系统凭证还在时，重新授权可以不弹界面直接拿到新 identityToken；
-    /// 弹了界面用户又取消、或换 token 失败 → 回未登录态，不崩。
-    private func silentReLoginThenRetry() async {
+    /// 静默重登一次；成功返回 true（token 已换新），失败回未登录态并返回 false。
+    /// refreshBalance 的 401 重试与 StoreViewModel 的 redeem 401 重试共用这一条路。
+    public func silentReLogin() async -> Bool {
         do {
             let result = try await authService.signIn()
             let response = try await apiClient.signIn(identityToken: result.identityToken)
@@ -110,8 +111,10 @@ public final class AuthViewModel {
             apiClient.token = response.token
             isSignedIn = true
             balance = response.balance
+            return true
         } catch {
             signOut()
+            return false
         }
     }
 }

@@ -6,3 +6,6 @@ DerivedData/
 
 # Swift Package Manager — local workspace state, not shareable
 .swiftpm/
+
+# Xcode user-specific state (schemes, breakpoints, UI state)
+**/xcuserdata/
