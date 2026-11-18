@@ -150,6 +150,47 @@ final class StoreTests: XCTestCase {
         XCTAssertEqual(viewModel.purchaseMessage, "已到账，余额 15 点")
     }
 
+    // MARK: - 监听重发的结果处理（F1：与 purchase() 同一口径）
+
+    /// .credited → 显示“已到账”并刷新余额（桩 GET /v1/credits 回 15）。
+    @MainActor
+    func testHandleRedeemOutcomeCreditedRefreshesBalance() async {
+        let (viewModel, authViewModel, _) = makeViewModelWithStub(store: MockStoreService())
+        await viewModel.handleRedeemOutcome(.credited(balance: 15))
+        XCTAssertEqual(viewModel.purchaseMessage, "已到账，余额 15 点")
+        XCTAssertNil(viewModel.errorMessage)
+        XCTAssertEqual(authViewModel.balance, 15)
+    }
+
+    /// .terminalNoCredit → 只显示文案，不刷新余额（仍是初始 5）。
+    @MainActor
+    func testHandleRedeemOutcomeTerminalNoCreditDoesNotRefresh() async {
+        let (viewModel, authViewModel, _) = makeViewModelWithStub(store: MockStoreService())
+        await viewModel.handleRedeemOutcome(.terminalNoCredit)
+        XCTAssertEqual(viewModel.errorMessage, "这笔交易已处理过，不再记账")
+        XCTAssertNil(viewModel.purchaseMessage)
+        XCTAssertEqual(authViewModel.balance, 5)
+    }
+
+    /// .retryable → 只显示文案，不刷新余额。
+    @MainActor
+    func testHandleRedeemOutcomeRetryableDoesNotRefresh() async {
+        let (viewModel, authViewModel, _) = makeViewModelWithStub(store: MockStoreService())
+        await viewModel.handleRedeemOutcome(.retryable(message: "网络失败"))
+        XCTAssertEqual(viewModel.errorMessage, "网络失败")
+        XCTAssertNil(viewModel.purchaseMessage)
+        XCTAssertEqual(authViewModel.balance, 5)
+    }
+
+    // MARK: - --dump-jws 参数解析（F2：纯函数，不碰 StoreKit）
+
+    func testDumpJWSTransactionIDParsing() {
+        XCTAssertEqual(CalmFrameApp.dumpJWSTransactionID(from: ["app", "--dump-jws", "2000001267340061"]), 2000001267340061)
+        XCTAssertNil(CalmFrameApp.dumpJWSTransactionID(from: ["app"]))
+        XCTAssertNil(CalmFrameApp.dumpJWSTransactionID(from: ["app", "--dump-jws"]))
+        XCTAssertNil(CalmFrameApp.dumpJWSTransactionID(from: ["app", "--dump-jws", "not-a-number"]))
+    }
+
     // MARK: - 搭建
 
     /// 造一个已登录的 view model：session 里放一个 sub 为给定 UUID 的假 JWT。

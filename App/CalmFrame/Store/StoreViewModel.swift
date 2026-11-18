@@ -78,15 +78,7 @@ public final class StoreViewModel {
                 productID: productID,
                 appAccountToken: appAccountTokenFromSession()
             )
-            switch await redeemAndFinish(purchased) {
-            case .credited(let balance):
-                purchaseMessage = "已到账，余额 \(balance) 点"
-                await authViewModel.refreshBalance()
-            case .terminalNoCredit:
-                errorMessage = "这笔交易已处理过，不再记账"
-            case .retryable(let message):
-                errorMessage = message
-            }
+            await handleRedeemOutcome(await redeemAndFinish(purchased))
         } catch StoreServiceError.cancelled {
             return
         } catch StoreServiceError.unverified {
@@ -109,10 +101,26 @@ public final class StoreViewModel {
 
     // MARK: - redeem + finish
 
-    private enum RedeemOutcome {
+    /// redeem 结果（内部：测试直接调 handleRedeemOutcome 用）。
+    enum RedeemOutcome {
         case credited(balance: Int)
         case terminalNoCredit
         case retryable(message: String)
+    }
+
+    /// redeem 一笔交易后的结果处理（purchase 与监听共用同一口径）：
+    /// .credited → 显示“已到账”并刷新余额（余额以服务端为准）；
+    /// 其余只显示文案，不刷新。
+    func handleRedeemOutcome(_ outcome: RedeemOutcome) async {
+        switch outcome {
+        case .credited(let balance):
+            purchaseMessage = "已到账，余额 \(balance) 点"
+            await authViewModel.refreshBalance()
+        case .terminalNoCredit:
+            errorMessage = "这笔交易已处理过，不再记账"
+        case .retryable(let message):
+            errorMessage = message
+        }
     }
 
     /// redeem 一笔交易，成败都按判定表处理 finish。
@@ -182,7 +190,9 @@ public final class StoreViewModel {
                     let purchased = PurchasedTransaction(jwsRepresentation: verification.jwsRepresentation) {
                         await transaction.finish()
                     }
-                    _ = await self.redeemAndFinish(purchased)
+                    // 跟 purchase() 同一口径：到账了就刷新余额、显示文案；
+                    // 之前这里直接丢了结果，监听重发到账后余额一直不刷（线上验收发现）。
+                    await self.handleRedeemOutcome(await self.redeemAndFinish(purchased))
                 case .unverified(let transaction, _):
                     // 验证不过的交易不记账；finish 清出队列，否则会一直重发。
                     await transaction.finish()
