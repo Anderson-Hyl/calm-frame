@@ -182,15 +182,6 @@ final class StoreTests: XCTestCase {
         XCTAssertEqual(authViewModel.balance, 5)
     }
 
-    // MARK: - --dump-jws 参数解析（F2：纯函数，不碰 StoreKit）
-
-    func testDumpJWSTransactionIDParsing() {
-        XCTAssertEqual(CalmFrameApp.dumpJWSTransactionID(from: ["app", "--dump-jws", "2000001267340061"]), 2000001267340061)
-        XCTAssertNil(CalmFrameApp.dumpJWSTransactionID(from: ["app"]))
-        XCTAssertNil(CalmFrameApp.dumpJWSTransactionID(from: ["app", "--dump-jws"]))
-        XCTAssertNil(CalmFrameApp.dumpJWSTransactionID(from: ["app", "--dump-jws", "not-a-number"]))
-    }
-
     // MARK: - 搭建
 
     /// 造一个已登录的 view model：session 里放一个 sub 为给定 UUID 的假 JWT。

@@ -1,4 +1,3 @@
-import StoreKit
 import SwiftUI
 
 /// 调试页路由。启动参数 `--debug` 可直接进调试页（用于截图验证）。
@@ -15,39 +14,6 @@ extension CalmFrameApp {
               url.scheme != nil, url.host != nil
         else { return nil }
         return url
-    }
-
-    /// 从启动参数读 `--dump-jws <transaction-id>`；没有或非法则返回 nil。
-    /// 一次性调试口子：只在显式传参时才把该交易的 JWS 打到 stdout，抓完即删。
-    static func dumpJWSTransactionID(from arguments: [String] = CommandLine.arguments) -> UInt64? {
-        guard let index = arguments.firstIndex(of: "--dump-jws"),
-              index + 1 < arguments.count,
-              let id = UInt64(arguments[index + 1])
-        else { return nil }
-        return id
-    }
-
-    /// 一次性调试：按商品取最新一笔交易，核对 id 后把它的 jwsRepresentation
-    /// 打到 stdout（前缀 JWS_DUMP:），抓完即删。
-    /// 只在显式传 `--dump-jws <id>` 时跑；找不到就打 JWS_DUMP:NOT_FOUND。
-    /// 注意：StoreKit 2 没有 Transaction.history（只有 currentEntitlements /
-    /// updates / latest(for:)）；已 finish 的消耗型交易只能用 latest(for:)
-    /// 按商品取最新一笔再按 id 核对（本 App 只有 credits.10 / credits.50）。
-    /// 注意：Transaction 在 SwiftUI 与 StoreKit 里都有同名类型，必须写全 StoreKit.Transaction。
-    static func dumpJWS(forTransactionID targetID: UInt64) async {
-        for productID in StoreViewModel.productIDs {
-            guard let verification = await StoreKit.Transaction.latest(for: productID) else { continue }
-            switch verification {
-            case .verified(let transaction):
-                if transaction.id == targetID {
-                    print("JWS_DUMP:\(verification.jwsRepresentation)")
-                    return
-                }
-            case .unverified:
-                continue
-            }
-        }
-        print("JWS_DUMP:NOT_FOUND")
     }
 }
 
@@ -111,11 +77,6 @@ struct CalmFrameApp: App {
                 }
                 Task { await authViewModel.restoreSession() }
                 storeViewModel.startUnfinishedTransactionListener()
-                // 一次性调试口子：--dump-jws <交易ID> 时把该交易的 JWS 打到 stdout，
-                // 供服务端重放 fixture 用；抓完即删（见 client-plan-round3-followup.md）。
-                if let dumpID = CalmFrameApp.dumpJWSTransactionID() {
-                    Task { await CalmFrameApp.dumpJWS(forTransactionID: dumpID) }
-                }
             }
         }
     }
