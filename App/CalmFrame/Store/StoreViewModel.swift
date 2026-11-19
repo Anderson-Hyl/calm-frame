@@ -218,28 +218,40 @@ public final class StoreViewModel {
         isRequestingRefund = true
         defer { isRequestingRefund = false }
         refundMessage = nil
+        // 调试日志：定位退款表“无法连接”的具体原因（2026-11-19）。
+        // 注意：表弹出来后内容加载失败属于系统表内部行为，代码侧看不到，
+        // 只能确认走到哪一步、beginRefundRequest 是返回还是抛错。
+        print("[Refund] requestRefund start, target=\(Self.refundTargetTransactionID)")
         // 取最新一笔 credits.10（已 finish 的消耗型交易靠
         // SKIncludeConsumableInAppPurchaseHistory=true 才取得到）。
         guard let verification = await Transaction.latest(for: "credits.10") else {
+            print("[Refund] Transaction.latest(for: credits.10) returned nil")
             refundMessage = "找不到 credits.10 的交易"
             return
         }
         guard case .verified(let transaction) = verification else {
+            print("[Refund] latest transaction unverified")
             refundMessage = "最新交易未通过验证"
             return
         }
+        print("[Refund] latest verified transaction id=\(transaction.id) productID=\(transaction.productID)")
         guard transaction.id == Self.refundTargetTransactionID else {
             refundMessage = "最新交易 \(transaction.id) 不是目标 \(Self.refundTargetTransactionID)"
             return
         }
         guard let scene = Self.activeWindowScene() else {
+            print("[Refund] no UIWindowScene")
             refundMessage = "找不到窗口场景"
             return
         }
+        print("[Refund] calling beginRefundRequest for transaction \(transaction.id)")
         do {
             let status = try await transaction.beginRefundRequest(in: scene)
+            print("[Refund] beginRefundRequest returned: \(status)")
             refundMessage = Self.message(for: status)
         } catch {
+            let nsError = error as NSError
+            print("[Refund] beginRefundRequest threw: domain=\(nsError.domain) code=\(nsError.code) description=\(error.localizedDescription) userInfo=\(nsError.userInfo)")
             refundMessage = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
         }
     }
