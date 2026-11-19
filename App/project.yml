@@ -37,6 +37,11 @@ targets:
         # 注意：直接改 Info.plist 文件会被 xcodegen 的“Generating plists”盖掉，
         # 所以这两个键必须写在这里，xcodegen 生成时才会带上。
         NSMicrophoneUsageDescription: "Calm Frame 需要使用麦克风聆听周围的环境声，判断房间氛围。音频只在设备端分析，不录音、不上传。"
+        # F2 取 JWS 的前提：默认情况下 Transaction.latest(for:) 不返回已 finish
+        # 的消耗型交易（已到账的两笔都是 finished consumable），所以第一次抓
+        # JWS 打了 NOT_FOUND。把这个键设为 true 后 latest(for:) 才会返回已
+        # finish 的消耗型交易。同上，必须写在这里，xcodegen 生成时才会带上。
+        SKIncludeConsumableInAppPurchaseHistory: true
     entitlements:
       path: CalmFrame/CalmFrame.entitlements
       # 注意：xcodegen generate 会按这里的 properties 重写 entitlements 文件。
