@@ -11,6 +11,7 @@ let package = Package(
         .package(url: "https://github.com/vapor/vapor.git", from: "4.122.3"),
         // ORM
         .package(url: "https://github.com/vapor/fluent.git", from: "4.13.0"),
+        .package(url: "https://github.com/vapor/fluent-kit.git", from: "1.57.0"),
         .package(url: "https://github.com/vapor/fluent-postgres-driver.git", from: "2.14.0"),
         // JWT signing/verification (Vapor-4-compatible series)
         .package(url: "https://github.com/vapor/jwt-kit.git", from: "4.13.5"),
@@ -38,6 +39,7 @@ let package = Package(
             dependencies: [
                 .product(name: "Vapor", package: "vapor"),
                 .product(name: "Fluent", package: "fluent"),
+            .product(name: "FluentSQL", package: "fluent-kit"),
                 .product(name: "FluentPostgresDriver", package: "fluent-postgres-driver"),
                 .product(name: "JWTKit", package: "jwt-kit"),
                 .product(name: "AppStoreServerLibrary", package: "app-store-server-library-swift"),

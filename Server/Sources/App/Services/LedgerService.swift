@@ -1,4 +1,5 @@
 import Fluent
+import FluentSQL
 import Vapor
 
 /// Handles credit ledger reads and writes.
@@ -108,17 +109,29 @@ struct LedgerService {
 
     // MARK: - Helpers
 
-    /// Inserts a ledger row, swallowing unique-constraint violations.
+    /// Inserts a ledger row, ignoring unique-constraint conflicts.
     /// Returns `true` when the row was inserted, `false` when it already existed.
+    ///
+    /// Implemented as `INSERT ... ON CONFLICT (reason, ref_id) DO NOTHING
+    /// RETURNING id`, not as `save` + catching the constraint error: a failed
+    /// statement inside an explicit transaction aborts the whole transaction
+    /// on Postgres (sqlState 25P02), so any later statement in that
+    /// transaction fails too — idempotent replays then came back HTTP 500
+    /// (live redeem check 20261119-060008). `ON CONFLICT DO NOTHING` never
+    /// errors, so the transaction stays usable; the unique index is still
+    /// the idempotency backstop, never a SELECT-then-INSERT. The same
+    /// statement works on the in-memory SQLite used by the test suite.
     private func insertIgnoringConstraint(_ entry: LedgerEntry, on db: any Database) async throws -> Bool {
-        do {
-            try await entry.save(on: db)
-            return true
-        } catch {
-            if let dbError = error as? any DatabaseError, dbError.isConstraintFailure {
-                return false
-            }
-            throw error
+        guard let sql = db as? any SQLDatabase else {
+            throw Abort(.internalServerError, reason: "Ledger requires an SQL database")
         }
+        let id = entry.id ?? UUID()
+        let row = try await sql.insert(into: LedgerEntry.schema)
+            .columns("id", "user_id", "delta", "reason", "ref_id", "created_at")
+            .values(id, entry.userID, entry.delta, entry.reason.rawValue, entry.refID, Date())
+            .ignoringConflicts(with: ["reason", "ref_id"])
+            .returning("id")
+            .first()
+        return row != nil
     }
 }
