@@ -15,6 +15,10 @@ func routes(_ app: Application) throws {
     let appStoreVerifier = app.appStoreVerifier
     try app.register(collection: CreditsController(appStoreVerifier: appStoreVerifier))
     try app.register(collection: AppStoreNotificationsController(appStoreVerifier: appStoreVerifier))
+
+    // Painting routes: POST /v1/paintings, GET /v1/paintings/latest,
+    // GET /static/paintings/:key (local storage backend).
+    try app.register(collection: PaintingsController())
 }
 
 // Server-internal only; not a shared DTO.

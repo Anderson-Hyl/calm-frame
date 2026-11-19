@@ -107,6 +107,32 @@ struct LedgerService {
             .first()?.userID
     }
 
+    // MARK: - Generation
+
+    /// Charges 1 credit for a painting generation.
+    ///
+    /// `ref_id` is a fresh attempt UUID per request — never the cache key —
+    /// so two users generating the same mood + style each get their own
+    /// charge row, and the loser's refund is attributable to the exact
+    /// attempt that paid (plan §3.3).
+    func chargeGeneration(to userID: UUID, attemptID: UUID, on db: any Database) async throws {
+        _ = try await insertIgnoringConstraint(
+            LedgerEntry(userID: userID, delta: -1, reason: .generate, refID: attemptID.uuidString),
+            on: db
+        )
+    }
+
+    /// Refunds a generation charge (generation failed, or this attempt lost
+    /// the cross-user cache-key race). Idempotent on the same attempt UUID:
+    /// a second call for the same attempt is silently ignored, so a
+    /// double-refund is impossible.
+    func refundGeneration(to userID: UUID, attemptID: UUID, on db: any Database) async throws {
+        _ = try await insertIgnoringConstraint(
+            LedgerEntry(userID: userID, delta: 1, reason: .refundFailure, refID: attemptID.uuidString),
+            on: db
+        )
+    }
+
     // MARK: - Helpers
 
     /// Inserts a ledger row, ignoring unique-constraint conflicts.

@@ -37,6 +37,9 @@ private func makeApp(verifier: any AppleTokenVerifier) async throws -> Applicati
     // Run migrations.
     app.migrations.add(CreateUsers())
     app.migrations.add(CreateLedgerEntries())
+    app.migrations.add(CreatePaintings())
+    app.migrations.add(CreateAiCosts())
+    app.migrations.add(AddPaintingStateToUsers())
     try await app.autoMigrate()
 
     // Register auth route with the fake verifier.

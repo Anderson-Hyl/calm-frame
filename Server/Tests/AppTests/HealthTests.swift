@@ -11,6 +11,9 @@ final class HealthTests: XCTestCase {
         app.databases.use(.sqlite(.memory), as: .psql, isDefault: true)
         app.migrations.add(CreateUsers())
         app.migrations.add(CreateLedgerEntries())
+        app.migrations.add(CreatePaintings())
+        app.migrations.add(CreateAiCosts())
+        app.migrations.add(AddPaintingStateToUsers())
         try await app.autoMigrate()
         // routes() needs the App Store verifier configured (as configure() does
         // in production); the health endpoint itself never uses it, so the fake is enough.

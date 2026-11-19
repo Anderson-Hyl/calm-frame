@@ -14,6 +14,9 @@ private func makeNotifyApp(verifier: any AppStoreVerifier) async throws -> Appli
     app.migrations.add(CreateUsers())
     app.migrations.add(CreateLedgerEntries())
     app.migrations.add(CreateAppStoreNotifications())
+    app.migrations.add(CreatePaintings())
+    app.migrations.add(CreateAiCosts())
+    app.migrations.add(AddPaintingStateToUsers())
     try await app.autoMigrate()
 
     // Register notifications route with the fake verifier.

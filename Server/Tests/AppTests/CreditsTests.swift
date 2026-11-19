@@ -19,6 +19,9 @@ private func makeCreditsApp() async throws -> Application {
     // Run migrations.
     app.migrations.add(CreateUsers())
     app.migrations.add(CreateLedgerEntries())
+    app.migrations.add(CreatePaintings())
+    app.migrations.add(CreateAiCosts())
+    app.migrations.add(AddPaintingStateToUsers())
     try await app.autoMigrate()
 
     // Register credits route.

@@ -20,6 +20,9 @@ private func makeRedeemApp(verifier: any AppStoreVerifier) async throws -> Appli
     app.migrations.add(CreateUsers())
     app.migrations.add(CreateLedgerEntries())
     app.migrations.add(CreateAppStoreNotifications())
+    app.migrations.add(CreatePaintings())
+    app.migrations.add(CreateAiCosts())
+    app.migrations.add(AddPaintingStateToUsers())
     try await app.autoMigrate()
 
     // Register credits route with the fake verifier.

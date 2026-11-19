@@ -16,3 +16,6 @@ Server/Tests/AppTests/Fixtures/sandbox-refund-notification.txt
 
 # App Store Connect API keys - private keys, never commit
 *.p8
+
+# Locally stored generated paintings (dev fallback backend) - generated files
+Server/paintings/
