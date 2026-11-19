@@ -2,6 +2,7 @@ import CalmFrameKit
 import Foundation
 import Observation
 import StoreKit
+import UIKit
 
 /// 购买的协调者（@MainActor）：拉商品 → 购买 → redeem → 刷新余额。
 /// finish 只在 redeem 200（或 409 终态）后调用；别的失败都不 finish，
@@ -199,5 +200,65 @@ public final class StoreViewModel {
                 }
             }
         }
+    }
+
+    // MARK: - 退款（调试口子：抓 REFUND fixture 用，抓完即删）
+
+    /// 调试退款目标交易（2026-11-19 14:07 入账的 credits.10）。
+    /// 临时常量，随退款按钮一起在清理提交里删掉。
+    static let refundTargetTransactionID: UInt64 = 2000001267841863
+
+    public private(set) var refundMessage: String?
+    public private(set) var isRequestingRefund = false
+
+    /// 对最新一笔 credits.10 调 beginRefundRequest 弹出退款表（沙盒自动批准）。
+    /// 只对 ID 与目标一致的已验证交易弹表；其余情况只显示文案，不弹表。
+    public func requestRefund() async {
+        guard !isRequestingRefund else { return }
+        isRequestingRefund = true
+        defer { isRequestingRefund = false }
+        refundMessage = nil
+        // 取最新一笔 credits.10（已 finish 的消耗型交易靠
+        // SKIncludeConsumableInAppPurchaseHistory=true 才取得到）。
+        guard let verification = await Transaction.latest(for: "credits.10") else {
+            refundMessage = "找不到 credits.10 的交易"
+            return
+        }
+        guard case .verified(let transaction) = verification else {
+            refundMessage = "最新交易未通过验证"
+            return
+        }
+        guard transaction.id == Self.refundTargetTransactionID else {
+            refundMessage = "最新交易 \(transaction.id) 不是目标 \(Self.refundTargetTransactionID)"
+            return
+        }
+        guard let scene = Self.activeWindowScene() else {
+            refundMessage = "找不到窗口场景"
+            return
+        }
+        do {
+            let status = try await transaction.beginRefundRequest(in: scene)
+            refundMessage = Self.message(for: status)
+        } catch {
+            refundMessage = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
+        }
+    }
+
+    /// 纯函数：退款表返回的状态 → 显示文案。单测直接调。
+    nonisolated static func message(for status: Transaction.RefundRequestStatus) -> String {
+        switch status {
+        case .success:
+            return "退款申请已提交，沙盒会自动批准"
+        case .userCancelled:
+            return "已取消退款申请"
+        @unknown default:
+            return "退款申请已提交"
+        }
+    }
+
+    private static func activeWindowScene() -> UIWindowScene? {
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first
     }
 }

@@ -157,6 +157,15 @@ struct DebugView: View {
             if let error = storeViewModel.errorMessage {
                 Text(error).foregroundStyle(.red)
             }
+            // 调试口子：对最新一笔 credits.10 调 beginRefundRequest 弹退款表
+            // （抓 REFUND fixture 用，抓完即删）。
+            Button("申请退款（调试）") {
+                Task { await storeViewModel.requestRefund() }
+            }
+            .disabled(storeViewModel.isRequestingRefund)
+            if let refundMessage = storeViewModel.refundMessage {
+                Text(refundMessage).foregroundStyle(.secondary)
+            }
         }
         .task {
             await storeViewModel.loadProducts()

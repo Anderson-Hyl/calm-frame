@@ -182,6 +182,13 @@ final class StoreTests: XCTestCase {
         XCTAssertEqual(authViewModel.balance, 5)
     }
 
+    // MARK: - 退款状态文案（纯函数）
+
+    func testRefundMessageForStatus() {
+        XCTAssertEqual(StoreViewModel.message(for: .success), "退款申请已提交，沙盒会自动批准")
+        XCTAssertEqual(StoreViewModel.message(for: .userCancelled), "已取消退款申请")
+    }
+
     // MARK: - 搭建
 
     /// 造一个已登录的 view model：session 里放一个 sub 为给定 UUID 的假 JWT。
