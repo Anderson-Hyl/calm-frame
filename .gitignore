@@ -13,3 +13,6 @@ DerivedData/
 # Sandbox JWS fixtures - bearer credentials, never commit
 Server/Tests/AppTests/Fixtures/sandbox-signed-transaction.txt
 Server/Tests/AppTests/Fixtures/sandbox-refund-notification.txt
+
+# App Store Connect API keys - private keys, never commit
+*.p8
